@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Sneaker Souk — Authenticate. Consign. Collect.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:      #0a0a0a;
+      --gray:       #111111;
+      --gray-2:     #1a1a1a;
+      --border:     #2a2a2a;
+      --gold:       #D4AF37;
+      --gold-light: #F0D060;
+      --gold-dark:  #A07820;
+      --white:      #F5F5F0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── UTILS ── */
+    .gold-text {
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light), var(--gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .zebra-bar {
+      height: 6px;
+      background: repeating-linear-gradient(
+        -45deg,
+        #fff 0px, #fff 8px,
+        #000 8px, #000 16px
+      );
+      opacity: 0.8;
+    }
+
+    .hiero-divider {
+      text-align: center;
+      font-size: 1.3rem;
+      color: var(--gold);
+      opacity: 0.5;
+      letter-spacing: 0.5rem;
+      user-select: none;
+      padding: 0.5rem 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(10,10,10,0.9);
+      border-bottom: 1px solid var(--gold);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      transition: backdrop-filter 0.3s;
+    }
+
+    nav.scrolled {
+      backdrop-filter: blur(12px);
+      background: rgba(10,10,10,0.75);
+    }
+
+    .nav-logo {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.35rem;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    #home {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at center, rgba(212,175,55,0.07) 0%, transparent 70%),
+        var(--black);
+    }
+
+    /* Diagonal zebra texture overlay */
+    #home::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -55deg,
+        transparent 0px, transparent 40px,
+        rgba(255,255,255,0.015) 40px, rgba(255,255,255,0.015) 42px
+      );
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.4em;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-family: 'Permanent Marker', cursive;
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      line-height: 1.05;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-subtitle {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      letter-spacing: 0.2em;
+      color: rgba(245,245,240,0.6);
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-hiero {
+      font-size: 1.6rem;
+      color: var(--gold);
+      opacity: 0.4;
+      letter-spacing: 0.8rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+      color: var(--black);
+      border: none;
+      padding: 0.85rem 2.2rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(212,175,55,0.45);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--gold);
+      border: 1.5px solid var(--gold);
+      padding: 0.85rem 2.2rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-outline:hover {
+      background: rgba(212,175,55,0.1);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(212,175,55,0.3);
+    }
+
+    /* Floating gold particles */
+    .particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--gold);
+      opacity: 0;
+      animation: float-up linear infinite;
+    }
+
+    @keyframes float-up {
+      0%   { transform: translateY(0) scale(1);   opacity: 0; }
+      10%  { opacity: 0.7; }
+      90%  { opacity: 0.3; }
+      100% { transform: translateY(-80vh) scale(0.3); opacity: 0; }
+    }
+
+    /* Eye of Horus SVG */
+    .horus-eye {
+      width: 48px;
+      height: 48px;
+      fill: var(--gold);
+      opacity: 0.7;
+      margin: 0 auto 1.5rem;
+      display: block;
+    }
+
+    /* ── HOW IT WORKS ── */
+    #consign {
+      background: var(--gray);
+      padding: 5rem 2rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      letter-spacing: 0.08em;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: rgba(245,245,240,0.55);
+      font-size: 0.95rem;
+      margin-bottom: 3rem;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .step-card {
+      background: var(--gray-2);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--gold);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .step-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(212,175,55,0.18);
+    }
+
+    .step-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+
+    .step-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .step-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .step-desc {
+      font-size: 0.88rem;
+      color: rgba(245,245,240,0.55);
+      line-height: 1.5;
+    }
+
+    /* ── WHY SOUK ── */
+    #why {
+      background: var(--black);
+      padding: 5rem 2rem;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      max-width: 950px;
+      margin: 0 auto;
+    }
+
+    .why-card {
+      background: var(--gray-2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      transition: box-shadow 0.3s;
+    }
+
+    .why-card:hover {
+      box-shadow: 0 0 28px rgba(212,175,55,0.22);
+    }
+
+    .why-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .why-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+
+    .why-desc {
+      font-size: 0.9rem;
+      color: rgba(245,245,240,0.55);
+      line-height: 1.6;
+    }
+
+    /* ── INVENTORY ── */
+    #inventory {
+      background: var(--gray);
+      padding: 5rem 2rem;
+    }
+
+    .inventory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .sneaker-card {
+      background: var(--gray-2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .sneaker-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(212,175,55,0.2);
+    }
+
+    .sneaker-img {
+      height: 200px;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a1a 50%, #1a1510 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sneaker-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent 0px, transparent 30px,
+        rgba(212,175,55,0.04) 30px, rgba(212,175,55,0.04) 32px
+      );
+    }
+
+    .sneaker-condition {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: var(--gold);
+      color: var(--black);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.5rem;
+      border-radius: 2px;
+      z-index: 1;
+    }
+
+    .sneaker-body {
+      padding: 1.25rem;
+    }
+
+    .sneaker-brand {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+      text-transform: uppercase;
+    }
+
+    .sneaker-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.15rem;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.3rem;
+    }
+
+    .sneaker-meta {
+      font-size: 0.82rem;
+      color: rgba(245,245,240,0.5);
+      margin-bottom: 1rem;
+    }
+
+    .sneaker-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sneaker-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.05em;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .btn-inquire {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 0.45rem 1rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-inquire:hover {
+      background: var(--gold);
+      color: var(--black);
+    }
+
+    .inventory-cta {
+      text-align: center;
+    }
+
+    /* ── CONSIGNMENT CTA BANNER ── */
+    #cta-banner {
+      padding: 5rem 2rem;
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #cta-banner::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    #cta-banner::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .cta-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .cta-headline {
+      font-family: 'Permanent Marker', cursive;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .cta-sub {
+      color: rgba(245,245,240,0.6);
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #050505;
+      border-top: 1px solid var(--gold);
+      padding: 3rem 2rem 2rem;
+    }
+
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .footer-logo {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-tagline {
+      font-size: 0.82rem;
+      color: rgba(245,245,240,0.4);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1.25rem;
+    }
+
+    .social-links a {
+      color: rgba(245,245,240,0.5);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      font-family: 'Bebas Neue', sans-serif;
+      transition: color 0.2s;
+    }
+
+    .social-links a:hover { color: var(--gold); }
+
+    .footer-bottom {
+      max-width: 900px;
+      margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-copy {
+      font-size: 0.78rem;
+      color: rgba(245,245,240,0.3);
+    }
+
+    .horus-footer {
+      width: 24px;
+      height: 24px;
+      fill: var(--gold);
+      opacity: 0.3;
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--gray-2);
+      border: 1px solid var(--gold);
+      max-width: 480px;
+      width: 100%;
+      padding: 2.5rem;
+      position: relative;
+      box-shadow: 0 0 60px rgba(212,175,55,0.3);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 1.4rem;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+      line-height: 1;
+    }
+
+    .modal-close:hover { opacity: 1; }
+
+    .modal-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      margin-bottom: 0.3rem;
+    }
+
+    .modal-sub {
+      font-size: 0.87rem;
+      color: rgba(245,245,240,0.5);
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      font-family: 'Bebas Neue', sans-serif;
+      margin-bottom: 0.3rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      background: var(--gray);
+      border: 1px solid var(--border);
+      color: var(--white);
+      padding: 0.65rem 0.9rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--gold);
+    }
+
+    .form-group select option { background: var(--gray-2); }
+
+    .modal-success {
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    .modal-success .success-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal-success p {
+      color: rgba(245,245,240,0.7);
+      font-size: 0.9rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+      .steps-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 400px) {
+      .steps-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a class="nav-logo" href="#home">THE SNEAKER SOUK</a>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#inventory">Inventory</a></li>
+      <li><a href="#consign">Consign</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="home">
+    <div class="particles" id="particles"></div>
+
+    <!-- Eye of Horus -->
+    <svg class="horus-eye" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 30 Q25 5 50 5 Q75 5 95 30 Q75 55 50 55 Q25 55 5 30Z" stroke-width="2" stroke="currentColor" fill="none"/>
+      <circle cx="50" cy="30" r="10"/>
+      <path d="M50 40 L44 55 L50 50 L56 55 Z"/>
+      <path d="M38 18 L30 8 M62 18 L70 8"/>
+      <line x1="50" y1="20" x2="50" y2="8"/>
+    </svg>
+
+    <p class="hero-eyebrow">Est. in the spirit of the ancient market</p>
+    <h1 class="hero-title gold-text">The Sneaker Souk</h1>
+    <p class="hero-subtitle">Where Sneaker Culture Meets The Souk</p>
+    <p class="hero-hiero">𓀀 𓂀 𓃭 𓅓 𓆣</p>
+
+    <div class="hero-btns">
+      <a href="#inventory" class="btn-primary">Browse Inventory</a>
+      <a href="#" class="btn-outline" id="btn-open-consign">Consign Your Kicks</a>
+    </div>
+  </section>
+
+  <!-- ZEBRA BAR -->
+  <div class="zebra-bar"></div>
+
+  <!-- HOW CONSIGNMENT WORKS -->
+  <section id="consign">
+    <h2 class="section-title gold-text">Drop Your Kicks</h2>
+    <p class="section-sub">Consigning is simple. We do the work, you get the cash.</p>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-icon">👟</div>
+        <div class="step-title">Bring Your Sneakers</div>
+        <p class="step-desc">Drop off your kicks in person or ship them to us. Clean, boxed, or raw — we accept all.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-icon">🔍</div>
+        <div class="step-title">We Authenticate</div>
+        <p class="step-desc">Our experts inspect every pair. No fakes, no compromises. Authenticity is our foundation.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-icon">🏷️</div>
+        <div class="step-title">We Sell For You</div>
+        <p class="step-desc">We photograph, price, and list your sneakers across our channels at market-optimal rates.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <div class="step-icon">💰</div>
+        <div class="step-title">You Get Paid</div>
+        <p class="step-desc">Once sold, your payout lands fast. No hassle, no chasing buyers. Pure profit.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZEBRA BAR -->
+  <div class="zebra-bar"></div>
+
+  <!-- WHY THE SOUK -->
+  <section id="why">
+    <h2 class="section-title gold-text">Why The Souk?</h2>
+    <p class="section-sub">Built for collectors, by collectors.</p>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🔐</div>
+        <div class="why-title">Authenticated Only</div>
+        <p class="why-desc">Every pair goes through our rigorous verification process. What you see is exactly what you get — legit, every time.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📈</div>
+        <div class="why-title">Best Market Price</div>
+        <p class="why-desc">We track the market daily to ensure your pair is priced right — competitive enough to sell, never undersold.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🛡️</div>
+        <div class="why-title">No Risk To You</div>
+        <p class="why-desc">You don't pay until we sell. No listing fees, no upfront costs. Consign with zero risk.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZEBRA BAR -->
+  <div class="zebra-bar"></div>
+
+  <!-- INVENTORY -->
+  <section id="inventory">
+    <h2 class="section-title gold-text">Fresh Drops</h2>
+    <p class="section-sub">Current available inventory — authenticated and ready to move.</p>
+
+    <div class="inventory-grid">
+
+      <div class="sneaker-card">
+        <div class="sneaker-img">
+          👟
+          <span class="sneaker-condition">Deadstock</span>
+        </div>
+        <div class="sneaker-body">
+          <div class="sneaker-brand">Nike</div>
+          <div class="sneaker-name">Air Jordan 1 Retro High OG</div>
+          <div class="sneaker-meta">Size US 10 &nbsp;·&nbsp; Chicago Colorway</div>
+          <div class="sneaker-footer">
+            <span class="sneaker-price">$620</span>
+            <button class="btn-inquire" onclick="openInquireModal('Air Jordan 1 Retro High OG')">Inquire</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sneaker-card">
+        <div class="sneaker-img">
+          👟
+          <span class="sneaker-condition">VNDS</span>
+        </div>
+        <div class="sneaker-body">
+          <div class="sneaker-brand">Adidas</div>
+          <div class="sneaker-name">Yeezy Boost 350 V2</div>
+          <div class="sneaker-meta">Size US 9.5 &nbsp;·&nbsp; Zebra</div>
+          <div class="sneaker-footer">
+            <span class="sneaker-price">$310</span>
+            <button class="btn-inquire" onclick="openInquireModal('Yeezy Boost 350 V2 Zebra')">Inquire</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sneaker-card">
+        <div class="sneaker-img">
+          👟
+          <span class="sneaker-condition">Deadstock</span>
+        </div>
+        <div class="sneaker-body">
+          <div class="sneaker-brand">New Balance</div>
+          <div class="sneaker-name">550 White Green</div>
+          <div class="sneaker-meta">Size US 11 &nbsp;·&nbsp; OG Colourway</div>
+          <div class="sneaker-footer">
+            <span class="sneaker-price">$185</span>
+            <button class="btn-inquire" onclick="openInquireModal('New Balance 550 White Green')">Inquire</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sneaker-card">
+        <div class="sneaker-img">
+          👟
+          <span class="sneaker-condition">Deadstock</span>
+        </div>
+        <div class="sneaker-body">
+          <div class="sneaker-brand">Nike</div>
+          <div class="sneaker-name">Dunk Low Retro Panda</div>
+          <div class="sneaker-meta">Size US 8 &nbsp;·&nbsp; Black/White</div>
+          <div class="sneaker-footer">
+            <span class="sneaker-price">$140</span>
+            <button class="btn-inquire" onclick="openInquireModal('Nike Dunk Low Panda')">Inquire</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sneaker-card">
+        <div class="sneaker-img">
+          👟
+          <span class="sneaker-condition">VNDS</span>
+        </div>
+        <div class="sneaker-body">
+          <div class="sneaker-brand">Jordan Brand</div>
+          <div class="sneaker-name">Air Jordan 4 Retro Thunder</div>
+          <div class="sneaker-meta">Size US 9 &nbsp;·&nbsp; Black/Tour Yellow</div>
+          <div class="sneaker-footer">
+            <span class="sneaker-price">$425</span>
+            <button class="btn-inquire" onclick="openInquireModal('Air Jordan 4 Thunder')">Inquire</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sneaker-card">
+        <div class="sneaker-img">
+          👟
+          <span class="sneaker-condition">Deadstock</span>
+        </div>
+        <div class="sneaker-body">
+          <div class="sneaker-brand">Salehe Bembury × New Balance</div>
+          <div class="sneaker-name">574 Yurt</div>
+          <div class="sneaker-meta">Size US 10.5 &nbsp;·&nbsp; Limited</div>
+          <div class="sneaker-footer">
+            <span class="sneaker-price">$550</span>
+            <button class="btn-inquire" onclick="openInquireModal('Salehe Bembury NB 574 Yurt')">Inquire</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="inventory-cta">
+      <a href="#" class="btn-outline" onclick="openInquireModal('Full Inventory')">View All Inventory</a>
+    </div>
+  </section>
+
+  <!-- ZEBRA BAR -->
+  <div class="zebra-bar"></div>
+
+  <!-- CTA BANNER -->
+  <section id="cta-banner">
+    <div class="cta-inner">
+      <div class="hiero-divider">𓀀 𓂀 𓃭 𓅓 𓆣</div>
+      <h2 class="cta-headline gold-text">Got Heat?<br/>Let's Sell It.</h2>
+      <p class="cta-sub">We handle authentication, pricing &amp; sales. You just get paid.</p>
+      <button class="btn-primary" id="btn-cta-consign">Start Consigning</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contact">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">The Sneaker Souk</div>
+        <p class="footer-tagline">Authenticate. Consign. Collect.</p>
+      </div>
+      <div class="social-links">
+        <a href="#">Instagram</a>
+        <a href="#">WhatsApp</a>
+        <a href="#">TikTok</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2025 The Sneaker Souk. All Rights Reserved.</p>
+      <!-- Eye of Horus watermark -->
+      <svg class="horus-footer" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 30 Q25 5 50 5 Q75 5 95 30 Q75 55 50 55 Q25 55 5 30Z" stroke-width="2" stroke="currentColor" fill="none"/>
+        <circle cx="50" cy="30" r="10"/>
+        <path d="M50 40 L44 55 L50 50 L56 55 Z"/>
+        <path d="M38 18 L30 8 M62 18 L70 8"/>
+        <line x1="50" y1="20" x2="50" y2="8"/>
+      </svg>
+    </div>
+  </footer>
+
+  <!-- INQUIRE MODAL -->
+  <div class="modal-overlay" id="inquire-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('inquire-modal')">&times;</button>
+      <div class="modal-title">Inquire</div>
+      <p class="modal-sub" id="inquire-sub">Interested in a pair? Drop your details and we'll be in touch.</p>
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" placeholder="e.g. Khalid Hassan" />
+      </div>
+      <div class="form-group">
+        <label>WhatsApp / Phone</label>
+        <input type="tel" placeholder="+971 50 000 0000" />
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea rows="3" placeholder="Tell us what you're after…"></textarea>
+      </div>
+      <button class="btn-primary" style="width:100%" onclick="submitInquire()">Send Inquiry</button>
+    </div>
+  </div>
+
+  <!-- CONSIGN MODAL -->
+  <div class="modal-overlay" id="consign-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('consign-modal')">&times;</button>
+      <div id="consign-form-inner">
+        <div class="modal-title">Consign Your Kicks</div>
+        <p class="modal-sub">Fill in the details and we'll reach out to arrange a drop-off or pick-up.</p>
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="e.g. Mariam Al Zaabi" />
+        </div>
+        <div class="form-group">
+          <label>WhatsApp / Phone</label>
+          <input type="tel" placeholder="+971 50 000 0000" />
+        </div>
+        <div class="form-group">
+          <label>Sneaker Brand</label>
+          <input type="text" placeholder="e.g. Nike, Jordan, Adidas…" />
+        </div>
+        <div class="form-group">
+          <label>Model &amp; Colourway</label>
+          <input type="text" placeholder="e.g. Air Jordan 1 High OG — University Blue" />
+        </div>
+        <div class="form-group">
+          <label>Size (US)</label>
+          <input type="text" placeholder="e.g. 9.5" />
+        </div>
+        <div class="form-group">
+          <label>Condition</label>
+          <select>
+            <option value="">Select condition…</option>
+            <option>Deadstock (DS) — worn 0 times</option>
+            <option>Very Near Deadstock (VNDS) — worn 1-2 times</option>
+            <option>Excellent Used (8/10)</option>
+            <option>Good Used (7/10)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Do you have the original box?</label>
+          <select>
+            <option>Yes — original box</option>
+            <option>No — no box</option>
+            <option>Replacement box</option>
+          </select>
+        </div>
+        <button class="btn-primary" style="width:100%;margin-top:0.5rem" onclick="submitConsign()">Submit for Review</button>
+      </div>
+      <div id="consign-success" class="modal-success" style="display:none">
+        <div class="success-icon">✅</div>
+        <div class="modal-title" style="margin-bottom:0.5rem">We Got You!</div>
+        <p>Your submission has been received. Our team will reach out on WhatsApp within 24 hours to confirm details and arrange your drop-off.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── Particles ──
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 25; i++) {
+      const p = document.createElement('span');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.bottom = '-10px';
+      p.style.width = p.style.height = (Math.random() * 3 + 1.5) + 'px';
+      p.style.animationDuration = (Math.random() * 8 + 6) + 's';
+      p.style.animationDelay = (Math.random() * 8) + 's';
+      container.appendChild(p);
+    }
+
+    // ── Nav scroll behaviour ──
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 80);
+    });
+
+    // ── Modals ──
+    function openInquireModal(item) {
+      document.getElementById('inquire-sub').textContent =
+        item === 'Full Inventory'
+          ? 'Interested in browsing our full catalogue? Leave your details.'
+          : `Interested in the ${item}? Leave your details and we'll be in touch.`;
+      document.getElementById('inquire-modal').classList.add('active');
+    }
+
+    function submitInquire() {
+      closeModal('inquire-modal');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    document.getElementById('btn-open-consign').addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('consign-modal').classList.add('active');
+    });
+
+    document.getElementById('btn-cta-consign').addEventListener('click', () => {
+      document.getElementById('consign-success').style.display = 'none';
+      document.getElementById('consign-form-inner').style.display = 'block';
+      document.getElementById('consign-modal').classList.add('active');
+    });
+
+    function submitConsign() {
+      document.getElementById('consign-form-inner').style.display = 'none';
+      document.getElementById('consign-success').style.display = 'block';
+    }
+
+    // Close modals on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', e => {
+        if (e.target === overlay) overlay.classList.remove('active');
+      });
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+      }
+    });
+  </script>
+</body>
+</html>
