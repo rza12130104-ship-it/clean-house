@@ -2,671 +2,676 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#6366f1">
-  <title>Clean House</title>
-  <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQ2xlYW4gSG91c2UiLCJzaG9ydF9uYW1lIjoiQ2xlYW4gSG91c2UiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzBmMTcyYSIsInRoZW1lX2NvbG9yIjoiIzYzNjZmMSJ9">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="universoul.ai — AI tools built for creators and businesses. Automate smarter. Create faster. Grow without limits.">
+  <meta name="theme-color" content="#0a0a0f">
+  <title>universoul.ai — AI Tools for Creators & Businesses</title>
   <style>
-    /* === Reset & Variables === */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg: #0f172a;
-      --card: #1e293b;
-      --accent: #6366f1;
-      --accent2: #818cf8;
-      --text: #f1f5f9;
-      --muted: #94a3b8;
-      --green: #22c55e;
-      --amber: #f59e0b;
-      --red: #ef4444;
-      --border: #334155;
+      --bg: #0a0a0f;
+      --bg2: #0f0f1a;
+      --card: #13131f;
+      --border: #1e1e30;
+      --accent: #7c3aed;
+      --accent2: #a78bfa;
+      --glow: rgba(124, 58, 237, 0.4);
+      --text: #f1f0ff;
+      --muted: #8b8aaa;
+      --white: #ffffff;
     }
 
-    /* === Layout === */
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
       background: var(--bg);
       color: var(--text);
-      min-height: 100vh;
-      padding: 0 0 100px;
+      overflow-x: hidden;
     }
 
-    /* === Header === */
-    .header {
-      background: linear-gradient(135deg, var(--accent), #4f46e5);
-      padding: 24px 20px 20px;
-      text-align: center;
-      position: sticky;
+    /* ── NAV ── */
+    nav {
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 100;
-    }
-
-    .header h1 { font-size: 24px; font-weight: 700; }
-    .header p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
-
-    /* === Week Navigation === */
-    .week-nav {
-      display: flex;
-      gap: 6px;
-      padding: 16px;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      background: var(--bg);
-      position: sticky;
-      top: 76px;
-      z-index: 99;
-    }
-
-    .week-nav button {
-      flex-shrink: 0;
-      padding: 10px 16px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .week-nav button.active {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
-    }
-
-    .week-nav button .emoji { margin-right: 4px; }
-
-    /* === Progress === */
-    .progress-bar {
-      margin: 0 16px 8px;
-      background: var(--card);
-      border-radius: 8px;
-      height: 8px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--green));
-      border-radius: 8px;
-      transition: width 0.4s ease;
-    }
-
-    .progress-text {
-      text-align: center;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-
-    /* === Day Cards === */
-    .day-card {
-      margin: 8px 16px;
-      background: var(--card);
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-
-    .day-header {
-      padding: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      cursor: pointer;
-    }
-
-    .day-header h3 { font-size: 16px; font-weight: 600; }
-    .day-header .time-est { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-    .day-header .badge {
-      font-size: 12px;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-weight: 600;
-    }
-
-    .badge-todo { background: rgba(99, 102, 241, 0.15); color: var(--accent2); }
-    .badge-done { background: rgba(34, 197, 94, 0.15); color: var(--green); }
-
-    /* === Tasks === */
-    .day-tasks { padding: 0 16px 16px; }
-
-    .task {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 12px 0;
+      padding: 20px 40px;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
 
-    .task:last-child { border-bottom: none; }
-
-    .task input[type=checkbox] {
-      width: 22px;
-      height: 22px;
-      accent-color: var(--accent);
-      margin-top: 1px;
-      flex-shrink: 0;
-      cursor: pointer;
+    .nav-logo {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--white);
     }
 
-    .task label {
-      font-size: 14px;
-      line-height: 1.4;
-      cursor: pointer;
-      flex: 1;
+    .nav-logo span { color: var(--accent2); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
     }
 
-    .task.done label {
-      text-decoration: line-through;
+    .nav-links a {
       color: var(--muted);
-    }
-
-    /* === Quick Actions === */
-    .swap-section {
-      margin: 16px;
-      background: var(--card);
-      border-radius: 16px;
-      padding: 16px;
-      border: 1px solid var(--border);
-    }
-
-    .swap-section h3 { font-size: 16px; margin-bottom: 12px; }
-
-    .swap-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text);
-      font-size: 13px;
-      cursor: pointer;
-      margin: 4px;
-    }
-
-    .swap-btn:active {
-      background: var(--accent);
-      border-color: var(--accent);
-    }
-
-    /* === Notes === */
-    .notes-section {
-      margin: 16px;
-      background: var(--card);
-      border-radius: 16px;
-      padding: 16px;
-      border: 1px solid var(--border);
-    }
-
-    .notes-section h3 { font-size: 16px; margin-bottom: 12px; }
-
-    .notes-section textarea {
-      width: 100%;
-      min-height: 80px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px;
-      color: var(--text);
+      text-decoration: none;
       font-size: 14px;
-      resize: vertical;
-      font-family: inherit;
+      font-weight: 500;
+      transition: color 0.2s;
     }
 
-    /* === Toast === */
-    .toast {
-      position: fixed;
-      bottom: 20px;
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: var(--accent);
+      color: var(--white) !important;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600 !important;
+      transition: background 0.2s, box-shadow 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      background: #6d28d9 !important;
+      box-shadow: 0 0 20px var(--glow);
+      color: var(--white) !important;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--green);
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      opacity: 0;
-      transition: 0.3s;
-      z-index: 200;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
       pointer-events: none;
     }
 
-    .toast.show { opacity: 1; }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(124, 58, 237, 0.12);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      color: var(--accent2);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 32px;
+      letter-spacing: 0.3px;
+    }
 
-    /* === Swap Modal === */
-    .swap-modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: 300;
-      align-items: flex-end;
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent2);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    h1 {
+      font-size: clamp(40px, 7vw, 80px);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -2px;
+      max-width: 900px;
+      margin-bottom: 24px;
+    }
+
+    h1 .gradient {
+      background: linear-gradient(135deg, #a78bfa, #7c3aed, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.6;
+      margin-bottom: 48px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
       justify-content: center;
     }
 
-    .swap-modal.show { display: flex; }
-
-    .swap-sheet {
-      background: var(--card);
-      border-radius: 20px 20px 0 0;
-      padding: 24px;
-      width: 100%;
-      max-width: 500px;
-      max-height: 70vh;
-      overflow-y: auto;
-    }
-
-    .swap-sheet h3 { margin-bottom: 16px; font-size: 18px; }
-
-    .swap-option {
-      padding: 14px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .swap-option:active {
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       background: var(--accent);
-      border-color: var(--accent);
+      color: var(--white);
+      padding: 16px 32px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+      border: none;
+      cursor: pointer;
     }
 
-    .swap-cancel {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      background: var(--border);
+    .btn-primary:hover {
+      background: #6d28d9;
+      box-shadow: 0 0 30px var(--glow);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
       color: var(--text);
+      padding: 16px 32px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, background 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent2);
+      background: rgba(124, 58, 237, 0.06);
+    }
+
+    /* ── SOCIAL PROOF ── */
+    .proof {
+      padding: 32px 24px;
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .proof-item {
+      text-align: center;
+    }
+
+    .proof-item .num {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -1px;
+    }
+
+    .proof-item .num span { color: var(--accent2); }
+
+    .proof-item .label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 100px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      max-width: 600px;
+      margin-bottom: 20px;
+    }
+
+    .section-sub {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.6;
+      margin-bottom: 60px;
+    }
+
+    /* ── FEATURES GRID ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(124, 58, 237, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(124, 58, 237, 0.12);
+      border: 1px solid rgba(124, 58, 237, 0.25);
       border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--white);
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0;
+      position: relative;
+    }
+
+    .step {
+      padding: 32px;
+      position: relative;
+    }
+
+    .step-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px var(--glow);
+    }
+
+    .step h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--white);
+    }
+
+    .step p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      max-width: 700px;
+    }
+
+    .contact-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .contact-card h2 {
+      margin-bottom: 8px;
+    }
+
+    .contact-card .sub {
+      color: var(--muted);
+      font-size: 16px;
+      margin-bottom: 36px;
+      line-height: 1.5;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    input, textarea, select {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      color: var(--text);
+      font-size: 15px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+      outline: none;
+      width: 100%;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent2);
+    }
+
+    textarea { resize: vertical; min-height: 100px; }
+
+    select option { background: var(--bg2); }
+
+    .form-submit {
       margin-top: 8px;
+    }
+
+    .success-msg {
+      display: none;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #4ade80;
+      padding: 16px 20px;
+      border-radius: 10px;
       font-size: 15px;
       font-weight: 600;
-      cursor: pointer;
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    footer .logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    footer .logo span { color: var(--accent2); }
+
+    footer p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+      .contact-card { padding: 32px 24px; }
+      footer { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <h1>🧹 Clean House</h1>
-    <p>Family Cleaning Schedule</p>
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">universal<span>soul</span>.ai</div>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#contact" class="nav-cta">Book a Call</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">Now Accepting Early Clients</div>
+    <h1>AI Tools Built for<br><span class="gradient">Creators & Businesses</span></h1>
+    <p class="hero-sub">universoul.ai gives you the AI infrastructure to automate smarter, create faster, and grow without limits — built around your vision.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Book a Free Call →</a>
+      <a href="#features" class="btn-secondary">See What We Build</a>
+    </div>
+  </section>
+
+  <!-- PROOF -->
+  <div class="proof">
+    <div class="proof-item">
+      <div class="num">10<span>x</span></div>
+      <div class="label">Faster content output</div>
+    </div>
+    <div class="proof-item">
+      <div class="num">80<span>%</span></div>
+      <div class="label">Reduction in manual tasks</div>
+    </div>
+    <div class="proof-item">
+      <div class="num">24<span>/7</span></div>
+      <div class="label">AI working for you</div>
+    </div>
+    <div class="proof-item">
+      <div class="num">∞</div>
+      <div class="label">Scale without hiring</div>
+    </div>
   </div>
 
-  <div class="week-nav" id="weekNav"></div>
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="section-label">What We Build</div>
+    <h2>AI tools shaped around your workflow</h2>
+    <p class="section-sub">We don't sell generic software. We build custom AI systems that plug directly into how your business operates.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">✍️</div>
+        <h3>AI Content Systems</h3>
+        <p>Automated pipelines that research, write, and publish content at scale — blogs, social, scripts, emails — in your voice.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3>Custom AI Agents</h3>
+        <p>Intelligent agents that handle customer support, lead qualification, scheduling, and internal ops — around the clock.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Workflow Automation</h3>
+        <p>Connect your tools, eliminate bottlenecks, and automate the repetitive work that's slowing your team down.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Data & Insights</h3>
+        <p>AI-powered dashboards and reporting that surface what matters — so you make faster, smarter decisions.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <h3>Creator Tools</h3>
+        <p>From video scripts to brand assets, our AI tools amplify your creative output without diluting your unique edge.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔗</div>
+        <h3>Integrations & APIs</h3>
+        <p>We wire AI into your existing stack — Notion, Shopify, HubSpot, Slack, and beyond — no rip-and-replace required.</p>
+      </div>
+    </div>
+  </section>
 
-  <div class="progress-bar">
-    <div class="progress-fill" id="progressFill"></div>
-  </div>
-  <div class="progress-text" id="progressText"></div>
+  <!-- HOW IT WORKS -->
+  <section id="how" style="max-width:1100px">
+    <div class="section-label">Process</div>
+    <h2>From first call to running system</h2>
+    <p class="section-sub">We keep it simple. No bloated proposals — just a clear path from conversation to results.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Discovery Call</h3>
+        <p>We learn your business, your bottlenecks, and where AI can make the biggest immediate impact.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Custom Blueprint</h3>
+        <p>We map out the exact AI systems to build — no cookie-cutter solutions, no upsell noise.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Build & Deploy</h3>
+        <p>We build, test, and launch your AI tools — fast. Most systems go live within weeks, not months.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Grow & Optimize</h3>
+        <p>We stay in the loop, iterating as your business evolves so your AI keeps delivering results.</p>
+      </div>
+    </div>
+  </section>
 
-  <div id="dayCards"></div>
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-card">
+      <div class="section-label">Get Started</div>
+      <h2>Book a free discovery call</h2>
+      <p class="sub">Tell us about your business and what you're looking to automate or build. We'll come prepared with ideas — no pitch, just a real conversation.</p>
+      <form id="contactForm" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group" style="margin-bottom:0">
+            <label for="fname">First name</label>
+            <input type="text" id="fname" placeholder="Alex" required>
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label for="lname">Last name</label>
+            <input type="text" id="lname" placeholder="Johnson" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="alex@yourbusiness.com" required>
+        </div>
+        <div class="form-group">
+          <label for="biz">Business / Project</label>
+          <input type="text" id="biz" placeholder="What do you do?">
+        </div>
+        <div class="form-group">
+          <label for="interest">What are you most interested in?</label>
+          <select id="interest">
+            <option value="">Select one...</option>
+            <option>AI Content Systems</option>
+            <option>Custom AI Agents</option>
+            <option>Workflow Automation</option>
+            <option>Creator Tools</option>
+            <option>Data & Insights</option>
+            <option>Not sure yet — let's talk</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="msg">Anything else? (optional)</label>
+          <textarea id="msg" placeholder="Tell us what's slowing you down, or what you'd love to automate..."></textarea>
+        </div>
+        <div class="form-submit">
+          <button type="submit" class="btn-primary" style="width:100%;justify-content:center">Book My Free Call →</button>
+        </div>
+        <div class="success-msg" id="successMsg">🎉 We got it! Expect a reply within 24 hours.</div>
+      </form>
+    </div>
+  </section>
 
-  <div class="swap-section">
-    <h3>🔄 Quick Actions</h3>
-    <button class="swap-btn" onclick="openSwap()">↔️ Swap Days</button>
-    <button class="swap-btn" onclick="resetWeek()">🔄 New Week</button>
-    <button class="swap-btn" onclick="skipAndStack()">📦 Skip & Stack</button>
-  </div>
-
-  <div class="notes-section">
-    <h3>✏️ Notes / Changes This Week</h3>
-    <textarea id="weekNotes" placeholder="Add swaps, changes, or notes here..." oninput="saveNotes()"></textarea>
-  </div>
-
-  <div class="swap-modal" id="swapModal">
-    <div class="swap-sheet" id="swapSheet"></div>
-  </div>
-
-  <div class="toast" id="toast"></div>
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo">universal<span>soul</span>.ai</div>
+    <p>© 2026 universoul.ai — AI Tools for Creators & Businesses</p>
+    <p>hello@universoul.ai</p>
+  </footer>
 
   <script>
-    // ============================================================
-    // Schedule Template (read-only reference — never mutate this)
-    // ============================================================
-    const SCHEDULE = {
-      mon: {
-        name: 'Monday', emoji: '🧽', label: 'Kitchen Reset', time: '15 min',
-        tasks: [
-          'Wipe counters & stovetop',
-          'Dishes / load dishwasher',
-          'Clean sink',
-          'Quick floor sweep'
-        ]
-      },
-      tue: {
-        name: 'Tuesday', emoji: '🧹', label: 'Vacuum Day', time: '15 min',
-        tasks: [
-          'Quick vacuum high-traffic areas',
-          'Hit dog hair spots (couch, beds)',
-          'Lint roll furniture if needed'
-        ]
-      },
-      wed: {
-        name: 'Wednesday', emoji: '🚿', label: 'Bathrooms', time: '15 min',
-        tasks: [
-          'Wipe sinks & mirrors',
-          'Scrub toilets',
-          'Wipe counters',
-          'Replace towels if needed'
-        ]
-      },
-      thu: {
-        name: 'Thursday', emoji: '🗂️', label: 'Tidy Up', time: '15 min',
-        tasks: [
-          'Pick up clutter in bedrooms',
-          'Tidy office',
-          "Kid's room reset",
-          'Put away stray items'
-        ]
-      },
-      fri: {
-        name: 'Friday', emoji: '🧼', label: 'Floors & Trash', time: '20 min',
-        tasks: [
-          'Mop kitchen & bathroom floors',
-          'Take out all trash & recycling',
-          'Restock cleaning supplies check',
-          'Quick entryway tidy'
-        ]
-      },
-      sat: {
-        name: 'Saturday', emoji: '💪', label: 'DEEP CLEAN', time: '1.5-2 hrs',
-        tasks: [
-          'Deep vacuum ALL rooms + furniture',
-          'Mop all hard floors',
-          'Scrub both bathrooms (tub, shower, grout)',
-          'Dust surfaces & ceiling fans (rotate rooms)',
-          'Wash dog bedding / pet area cleanup',
-          'Laundry catch-up (wash, dry, fold)',
-          'Clean mirrors & glass',
-          'Wipe light switches & door handles'
-        ]
-      },
-      sun: {
-        name: 'Sunday', emoji: '🌅', label: 'Reset for the Week', time: '30 min',
-        tasks: [
-          'Meal prep area clean',
-          'Quick whole-house pickup',
-          'Remaining laundry fold & put away',
-          'Supply restock & shopping list',
-          'Set out clothes for Monday'
-        ]
-      }
-    };
-
-    const DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
-    const STORAGE_KEY = 'cleanhouse-v1';
-
-    // ============================================================
-    // Data Helpers
-    // ============================================================
-    function getWeekId() {
-      const d = new Date();
-      const jan1 = new Date(d.getFullYear(), 0, 1);
-      const days = Math.floor((d - jan1) / 86400000);
-      return `${d.getFullYear()}-W${Math.ceil((days + jan1.getDay() + 1) / 7)}`;
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type=submit]');
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+      setTimeout(() => {
+        document.getElementById('contactForm').style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+      }, 800);
     }
-
-    function load() {
-      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
-      catch { return {}; }
-    }
-
-    function save(data) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    }
-
-    function getWeekData() {
-      const data = load();
-      const wk = getWeekId();
-
-      if (!data[wk]) {
-        data[wk] = { tasks: {}, notes: '', swaps: [], stacked: {} };
-        DAYS.forEach(d => {
-          data[wk].tasks[d] = SCHEDULE[d].tasks.map(() => false);
-          data[wk].stacked[d] = [];
-        });
-        save(data);
-      }
-
-      // Backfill stacked for older saved weeks
-      if (!data[wk].stacked) {
-        data[wk].stacked = {};
-        DAYS.forEach(d => { data[wk].stacked[d] = []; });
-        save(data);
-      }
-
-      return data[wk];
-    }
-
-    /** Full task list for a day = base schedule + any stacked overflow */
-    function getTasksForDay(day, weekData) {
-      return SCHEDULE[day].tasks.concat(weekData.stacked[day] || []);
-    }
-
-    // ============================================================
-    // UI Helpers
-    // ============================================================
-    function toast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2000);
-    }
-
-    function toggle(id) {
-      const el = document.getElementById(id);
-      el.style.display = el.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function scrollToDay(day) {
-      document.getElementById('day-' + day)
-        .scrollIntoView({ behavior: 'smooth', block: 'start' });
-      const el = document.getElementById('tasks-' + day);
-      if (el.style.display === 'none') el.style.display = 'block';
-    }
-
-    // ============================================================
-    // Render
-    // ============================================================
-    function render() {
-      const wk = getWeekData();
-      const today = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][new Date().getDay()];
-
-      // Week nav
-      document.getElementById('weekNav').innerHTML = DAYS.map(d => {
-        const s = SCHEDULE[d];
-        const done = wk.tasks[d].filter(Boolean).length;
-        const total = wk.tasks[d].length;
-        const check = (done === total && total > 0) ? ' ✅' : '';
-        return `<button class="${d === today ? 'active' : ''}" onclick="scrollToDay('${d}')">
-          <span class="emoji">${s.emoji}</span>${s.name.slice(0, 3)}${check}
-        </button>`;
-      }).join('');
-
-      // Progress
-      let totalTasks = 0, doneTasks = 0;
-      DAYS.forEach(d => {
-        totalTasks += wk.tasks[d].length;
-        doneTasks += wk.tasks[d].filter(Boolean).length;
-      });
-      const pct = totalTasks ? Math.round(doneTasks / totalTasks * 100) : 0;
-      document.getElementById('progressFill').style.width = pct + '%';
-      document.getElementById('progressText').textContent =
-        `${doneTasks}/${totalTasks} tasks done this week (${pct}%)`;
-
-      // Day cards
-      document.getElementById('dayCards').innerHTML = DAYS.map(d => {
-        const s = SCHEDULE[d];
-        const allTasks = getTasksForDay(d, wk);
-        const done = wk.tasks[d].filter(Boolean).length;
-        const total = wk.tasks[d].length;
-        const isToday = d === today;
-
-        return `
-          <div class="day-card" id="day-${d}" style="${isToday ? 'border-color:var(--accent)' : ''}">
-            <div class="day-header" onclick="toggle('tasks-${d}')">
-              <div>
-                <h3>${s.emoji} ${s.name} — ${s.label}</h3>
-                <div class="time-est">⏱️ ${s.time}${isToday ? ' • TODAY' : ''}</div>
-              </div>
-              <span class="badge ${done === total ? 'badge-done' : 'badge-todo'}">${done}/${total}</span>
-            </div>
-            <div class="day-tasks" id="tasks-${d}" style="display:${isToday ? 'block' : 'none'}">
-              ${allTasks.map((t, i) => `
-                <div class="task ${wk.tasks[d][i] ? 'done' : ''}">
-                  <input type="checkbox" id="cb-${d}-${i}"
-                    ${wk.tasks[d][i] ? 'checked' : ''}
-                    onchange="toggleTask('${d}',${i})">
-                  <label for="cb-${d}-${i}">${t}</label>
-                </div>`).join('')}
-            </div>
-          </div>`;
-      }).join('');
-
-      // Notes
-      document.getElementById('weekNotes').value = wk.notes || '';
-    }
-
-    // ============================================================
-    // Actions
-    // ============================================================
-    function toggleTask(day, idx) {
-      const data = load();
-      const wk = data[getWeekId()];
-      wk.tasks[day][idx] = !wk.tasks[day][idx];
-      save(data);
-      if (wk.tasks[day][idx]) toast('✅ Task done!');
-      render();
-    }
-
-    function saveNotes() {
-      const data = load();
-      data[getWeekId()].notes = document.getElementById('weekNotes').value;
-      save(data);
-    }
-
-    function resetWeek() {
-      if (!confirm('Reset all tasks for this week? Notes will be kept.')) return;
-      const data = load();
-      const wk = data[getWeekId()];
-      DAYS.forEach(d => {
-        wk.tasks[d] = SCHEDULE[d].tasks.map(() => false);
-        wk.stacked[d] = [];
-      });
-      save(data);
-      toast('Week reset! Fresh start 💪');
-      render();
-    }
-
-    // ============================================================
-    // Skip & Stack — saves overflow in weekData.stacked, not SCHEDULE
-    // ============================================================
-    function skipAndStack() {
-      const today = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][new Date().getDay()];
-      const idx = DAYS.indexOf(today);
-
-      if (idx < 0 || idx >= 4) {
-        toast("Stack works Mon–Thu only");
-        return;
-      }
-
-      const next = DAYS[idx + 1];
-      const data = load();
-      const wk = data[getWeekId()];
-      const allTasks = getTasksForDay(today, wk);
-
-      // Collect undone tasks
-      const undone = [];
-      wk.tasks[today].forEach((done, i) => {
-        if (!done) undone.push(allTasks[i]);
-      });
-
-      if (!undone.length) {
-        toast("Nothing to stack — all done! 🎉");
-        return;
-      }
-
-      // Push to next day's stacked list + extend checkbox array
-      undone.forEach(t => {
-        wk.stacked[next].push('📦 ' + t);
-        wk.tasks[next].push(false);
-      });
-
-      // Mark today complete
-      wk.tasks[today] = wk.tasks[today].map(() => true);
-      save(data);
-      toast(`Stacked ${undone.length} tasks → ${SCHEDULE[next].name}`);
-      render();
-    }
-
-    // ============================================================
-    // Swap Modal
-    // ============================================================
-    function openSwap() {
-      const modal = document.getElementById('swapModal');
-      const sheet = document.getElementById('swapSheet');
-      const picks = [];
-
-      sheet.innerHTML = `
-        <h3>↔️ Swap Two Days</h3>
-        <p style="color:var(--muted);font-size:13px;margin-bottom:16px">Pick two days to swap their tasks:</p>
-        <div id="swapPicks"></div>
-        <button class="swap-cancel" onclick="closeSwap()">Cancel</button>`;
-
-      DAYS.forEach(d => {
-        const btn = document.createElement('div');
-        btn.className = 'swap-option';
-        btn.textContent = `${SCHEDULE[d].emoji} ${SCHEDULE[d].name} — ${SCHEDULE[d].label}`;
-        btn.onclick = () => {
-          picks.push(d);
-          btn.style.background = 'var(--accent)';
-          btn.style.borderColor = 'var(--accent)';
-          if (picks.length === 2) {
-            doSwap(picks[0], picks[1]);
-            closeSwap();
-          }
-        };
-        sheet.querySelector('#swapPicks').appendChild(btn);
-      });
-
-      modal.classList.add('show');
-    }
-
-    function closeSwap() {
-      document.getElementById('swapModal').classList.remove('show');
-    }
-
-    function doSwap(a, b) {
-      const data = load();
-      const wk = data[getWeekId()];
-      [wk.tasks[a], wk.tasks[b]] = [wk.tasks[b], wk.tasks[a]];
-      save(data);
-      toast(`Swapped ${SCHEDULE[a].name} ↔️ ${SCHEDULE[b].name}`);
-      render();
-    }
-
-    // ============================================================
-    // Init
-    // ============================================================
-    document.getElementById('swapModal').addEventListener('click', e => {
-      if (e.target === document.getElementById('swapModal')) closeSwap();
-    });
-
-    render();
   </script>
+
 </body>
 </html>
