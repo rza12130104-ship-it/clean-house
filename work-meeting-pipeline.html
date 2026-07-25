@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Case study: automating meeting follow-ups and action-item tracking for a professional services firm — universoul.ai">
+  <meta name="theme-color" content="#0a0a0f">
+  <title>Meeting-to-Action Pipeline — universoul.ai Case Study</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #0f0f1a;
+      --card: #13131f;
+      --border: #1e1e30;
+      --accent: #7c3aed;
+      --accent2: #a78bfa;
+      --glow: rgba(124, 58, 237, 0.4);
+      --text: #f1f0ff;
+      --muted: #8b8aaa;
+      --white: #ffffff;
+      --good: #4ade80;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; color: var(--white); text-decoration: none; }
+    .nav-logo span { color: var(--accent2); }
+
+    .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: var(--accent);
+      color: var(--white) !important;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600 !important;
+      transition: background 0.2s, box-shadow 0.2s !important;
+    }
+    .nav-cta:hover { background: #6d28d9; box-shadow: 0 0 20px var(--glow); }
+
+    .hero {
+      padding: 160px 24px 80px;
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.14) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(124, 58, 237, 0.12);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      color: var(--accent2);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      letter-spacing: 0.3px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 5.5vw, 56px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 620px;
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .meta-item .k { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .meta-item .v { font-size: 15px; font-weight: 600; color: var(--text); }
+
+    section {
+      padding: 60px 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: clamp(24px, 3.5vw, 36px);
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      line-height: 1.15;
+      max-width: 620px;
+      margin-bottom: 20px;
+    }
+
+    .lede { font-size: 16px; color: var(--muted); line-height: 1.7; max-width: 640px; }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      margin-top: 36px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .stat-card .num { font-size: 30px; font-weight: 800; color: var(--white); letter-spacing: -1px; }
+    .stat-card .num.before { color: var(--muted); }
+    .stat-card .num.after { color: var(--good); }
+    .stat-card .label { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 40px;
+      position: relative;
+    }
+
+    .step {
+      display: flex;
+      gap: 24px;
+      padding-bottom: 40px;
+      position: relative;
+    }
+
+    .step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 44px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px var(--glow);
+      z-index: 1;
+    }
+
+    .step-body h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: var(--white); }
+    .step-body p { font-size: 14.5px; color: var(--muted); line-height: 1.6; max-width: 560px; }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    .stack-chip {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      color: var(--text);
+    }
+
+    .cta-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .cta-card::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-card h2 { max-width: none; margin: 0 auto 12px; }
+    .cta-card p { color: var(--muted); font-size: 16px; margin-bottom: 28px; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: var(--white);
+      padding: 16px 32px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: #6d28d9; box-shadow: 0 0 30px var(--glow); transform: translateY(-1px); }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    footer .logo { font-size: 18px; font-weight: 700; color: var(--white); }
+    footer .logo span { color: var(--accent2); }
+    footer p { font-size: 13px; color: var(--muted); }
+
+    .disclaimer { font-size: 12px; color: var(--muted); margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border); max-width: 640px; }
+
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .nav-links { gap: 16px; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .hero { padding: 130px 20px 60px; }
+      section { padding: 48px 20px; }
+      .cta-card { padding: 32px 24px; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">universal<span>soul</span>.ai</a>
+    <ul class="nav-links">
+      <li><a href="index.html#work">All Work</a></li>
+      <li><a href="index.html#contact" class="nav-cta">Book a Call</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <div class="tag">Case Study</div>
+    <h1>Meeting-to-Action Pipeline for a Professional Services Firm</h1>
+    <p class="hero-sub">Client calls were generating great notes and no follow-through. We built a pipeline that turns every calendar meeting into a documented summary, a tracked action list, and a drafted follow-up email — automatically.</p>
+    <div class="meta-row">
+      <div class="meta-item"><div class="k">Client Type</div><div class="v">Professional services firm</div></div>
+      <div class="meta-item"><div class="k">Team Size</div><div class="v">6 client-facing consultants</div></div>
+      <div class="meta-item"><div class="k">Build Time</div><div class="v">~2 weeks</div></div>
+      <div class="meta-item"><div class="k">Category</div><div class="v">Workflow Automation</div></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-label">The Problem</div>
+    <h2>Good calls, forgotten follow-ups</h2>
+    <p class="lede">Consultants took notes in whatever app was open — a notebook, a doc, sometimes nothing. Action items lived in someone's memory. Follow-up emails went out late, or not at all, and there was no shared record of what was promised to which client.</p>
+    <div class="stat-row">
+      <div class="stat-card"><div class="num before">~40%</div><div class="label">Meetings with no written follow-up</div></div>
+      <div class="stat-card"><div class="num before">3-5 days</div><div class="label">Typical delay before recap sent</div></div>
+      <div class="stat-card"><div class="num before">0</div><div class="label">Central action-item tracker</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">The Workflow</div>
+    <h2>What happens when a meeting ends</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Calendar event closes</h3>
+          <p>The end of a scheduled client meeting is the trigger — no one has to remember to kick anything off.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Meeting doc generated from a template</h3>
+          <p>A structured summary doc is created in Drive, pre-filled with the client name, attendees, and date, ready for notes.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Action items extracted to a tracker</h3>
+          <p>Bulleted action items from the notes are pulled into a shared Airtable tracker with an owner and due date, visible to the whole team.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>Follow-up email drafted</h3>
+          <p>A recap email addressed to the client is drafted in Gmail, summarizing what was discussed and what happens next — ready for a quick review and send.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h3>Next touchpoint scheduled</h3>
+          <p>A reminder is set ahead of the next milestone or check-in date so no client goes quiet for too long.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">The Result</div>
+    <h2>Every meeting now has a paper trail</h2>
+    <div class="stat-row">
+      <div class="stat-card"><div class="num after">100%</div><div class="label">Meetings with a written follow-up</div></div>
+      <div class="stat-card"><div class="num after">Same day</div><div class="label">Recap sent to client</div></div>
+      <div class="stat-card"><div class="num after">1</div><div class="label">Shared action-item tracker</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">Stack</div>
+    <h2>Tools wired together</h2>
+    <div class="stack-grid">
+      <div class="stack-chip">Google Calendar</div>
+      <div class="stack-chip">Google Drive</div>
+      <div class="stack-chip">Airtable</div>
+      <div class="stack-chip">Gmail</div>
+    </div>
+    <p class="disclaimer">This is an illustrative case study describing a representative workflow pattern, not a specific named client engagement.</p>
+  </section>
+
+  <section>
+    <div class="cta-card">
+      <div class="section-label">Get Started</div>
+      <h2>Tired of losing action items?</h2>
+      <p>Tell us how your team runs client meetings today and we'll show you what's automatable.</p>
+      <a href="index.html#contact" class="btn-primary">Book a Free Call →</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="logo">universal<span>soul</span>.ai</div>
+    <p>© 2026 universoul.ai — AI Tools for Creators & Businesses</p>
+    <p>hello@universoul.ai</p>
+  </footer>
+
+</body>
+</html>
